@@ -21,6 +21,10 @@ use Mix.Config
 #     config :logger, level: :info
 #
 
+# The wrapper script needs to be included in deployed releases; its
+# location can be configured differently in production
+config :port_quitting, port_wrapper_path: Path.expand("../port_wrapper", __DIR__)
+
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
 # by uncommenting the line below and defining dev.exs, test.exs and such.

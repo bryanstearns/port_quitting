@@ -1,0 +1,20 @@
+#!/bin/sh
+# Wraps a port-started process to kill it when BEAM exits
+
+# Enable job comtrol
+set -m
+
+# We'll exit when the port-started process exits
+trap 'exit 1' CHLD
+
+# Start the process and grab its PID
+"$@" &
+pid=$!
+
+# Try to read from our parent; since the parent's not going
+# to write anything, this'll block until it dies.
+# (the "-u 3" goes with the :nouse_stdio flag in Port.open)
+while read -u 3 line; do :; done
+
+# Hey, the parent died! Kill the child, then we're done.
+kill -KILL $pid
